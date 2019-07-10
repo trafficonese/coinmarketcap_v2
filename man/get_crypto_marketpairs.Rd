@@ -5,7 +5,8 @@
 \title{List all active market pairs}
 \usage{
 get_crypto_marketpairs(currency = "USD", apikey, symbol = NULL,
-  id = NULL, slug = NULL, start = NULL, limit = NULL)
+  id = NULL, slug = NULL, start = NULL, limit = NULL,
+  test = FALSE)
 }
 \arguments{
 \item{currency}{currency code - Default is 'USD'}
@@ -27,6 +28,9 @@ list of items to return. - Default is 1}
 \item{limit}{Optionally specify the number of results to return.
 Use this parameter and the "start" parameter to determine your own
 pagination size.}
+
+\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
+This requires an extra testing API key, but allows possible all requests.}
 }
 \value{
 A dataframe with all active market pairs
@@ -36,13 +40,13 @@ Get a list of all active market pairs that CoinMarketCap tracks for a
 given cryptocurrency or fiat currency
 }
 \note{
-At least one "id" or "slug" or "symbol" is required for this request.
+A single cryptocurrency "id", "slug", or "symbol" is required.
 }
 \examples{
 \dontrun{
 get_crypto_marketpairs("EUR", apikey)
 get_crypto_marketpairs("EUR", apikey, slug = "bitcoin")
-get_crypto_marketpairs("EUR", apikey, symbol = c("BTC","LTC"))
+get_crypto_marketpairs("EUR", apikey, symbol = "LTC")
 get_crypto_marketpairs("EUR", apikey, symbol = "BTC", start = 10, limit = 20)
 }
 }

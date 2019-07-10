@@ -10,15 +10,15 @@
 #' @examples \dontrun{
 #' get_exchange_map(apikey)
 #' get_exchange_map(apikey, listing_status = "inactive",
-#'                  slug = "bitcoin", start = 5, limit = 100)
+#'                  slug = "binance", start = 5, limit = 100)
 #' }
 #' @export
-get_exchange_map <- function(apikey, ...) {
+get_exchange_map <- function(apikey, test=FALSE, ...) {
         ## Input Check ##########
         if (is.null(apikey)) stop("A valid API key is needed for this request.")
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         what <- "exchange/map"
         whatelse <- list(...)
         whatelse <- transform_args(whatelse)
@@ -27,8 +27,6 @@ get_exchange_map <- function(apikey, ...) {
         }
 
         apiurl <- paste0("https://",base_url,"/v1/",what)
-        print(apiurl)
-        stop()
         ## Make Request ##########
         req <- make_request(apiurl, apikey)
 
@@ -47,17 +45,16 @@ get_exchange_map <- function(apikey, ...) {
 #' @inheritParams get_crypto_map
 #' @return A dataframe with exchange metadata values
 #' @examples \dontrun{
-#' get_exchange_meta(apikey)
-#' get_exchange_meta(apikey, id = 1)
+#' get_exchange_meta(apikey, id = 5)
 #' get_exchange_meta(apikey, slug = c("binance", "gdax"))
 #' }
 #' @export
-get_exchange_meta <- function(apikey, id=NULL, slug=NULL) {
+get_exchange_meta <- function(apikey, id=NULL, slug=NULL, test=FALSE) {
         ## Input Check ##########
         if (is.null(apikey)) stop("A valid API key is needed for this request.")
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         what <- "exchange/info"
         args <- c(is.null(id),is.null(slug))
         if (sum(args) != 1) {
@@ -67,8 +64,7 @@ get_exchange_meta <- function(apikey, id=NULL, slug=NULL) {
         if (!is.null(slug)) what <- paste0(what, "?slug=", paste(slug, collapse=","))
 
         apiurl <- paste0("https://",base_url,"/v1/",what)
-        print(apiurl)
-        stop()
+
         ## Make Request ##########
         req <- make_request(apiurl, apikey)
 

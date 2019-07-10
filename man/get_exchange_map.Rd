@@ -4,10 +4,13 @@
 \alias{get_exchange_map}
 \title{Get all cryptocurrency exchanges}
 \usage{
-get_exchange_map(apikey, ...)
+get_exchange_map(apikey, test = FALSE, ...)
 }
 \arguments{
 \item{apikey}{A valid API-key from Coinmarketcap}
+
+\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
+This requires an extra testing API key, but allows possible all requests.}
 
 \item{...}{Further arguments passed to the request. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation}{API documentation}}

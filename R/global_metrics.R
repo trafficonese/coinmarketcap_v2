@@ -4,9 +4,10 @@
 #' @param apikey A valid API-key from Coinmarketcap
 #' @param latest If `TRUE` (default), only the latest data is retrieved,
 #' otherwise historical data is returned. (NOTE: Historic Data require higher API rights)
+#' @param test If `TRUE`, the requests are done in a testing sandbox environment.
+#' This requires an extra testing API key, but allows possible all requests.
 #' @param ... Further arguments can be passed to historical data. Further information
 #' can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation/getV1GlobalmetricsQuotesHistorical}{API documentation}
-#'
 #' @return A dataframe with global market cap of Cryptocurrencies
 #' @examples \dontrun{
 #' get_global_marketcap('AUD')
@@ -18,7 +19,7 @@
 #' }
 #' @export
 get_global_marketcap <- function(currency = 'USD', apikey = NULL,
-                                 latest = TRUE, ...) {
+                                 latest = TRUE, test=FALSE, ...) {
         ## Check Inputs ##########
         stopifnot(currency %in% get_valid_currencies())
         ## Using old API ? ############
@@ -31,7 +32,7 @@ get_global_marketcap <- function(currency = 'USD', apikey = NULL,
         }
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         if (latest) {
                 what <- paste0("global-metrics/quotes/latest?convert=", currency)
         } else {

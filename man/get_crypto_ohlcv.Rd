@@ -5,7 +5,7 @@
 \title{List latest/historical OHLCV values}
 \usage{
 get_crypto_ohlcv(currency = "USD", apikey, latest = TRUE,
-  symbol = NULL, id = NULL, ...)
+  symbol = NULL, id = NULL, test = FALSE, ...)
 }
 \arguments{
 \item{currency}{currency code - Default is 'USD'}
@@ -20,6 +20,9 @@ Example: c("BTC","ETH").}
 
 \item{id}{Alternatively pass one or more CoinMarketCap cryptocurrency IDs.
 Example: c(1,2)}
+
+\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
+This requires an extra testing API key, but allows possible all requests.}
 
 \item{...}{Further arguments passed to the request. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation}{API documentation}}

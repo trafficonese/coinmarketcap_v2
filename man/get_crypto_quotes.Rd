@@ -5,7 +5,7 @@
 \title{Get market quotes}
 \usage{
 get_crypto_quotes(currency = "USD", apikey = NULL, symbol = NULL,
-  slug = NULL, id = NULL, latest = TRUE, ...)
+  slug = NULL, id = NULL, latest = TRUE, test = FALSE, ...)
 }
 \arguments{
 \item{currency}{currency code - Default is 'USD'}
@@ -23,6 +23,9 @@ Example: c(1,2)}
 
 \item{latest}{If `TRUE` (default), only the latest data is retrieved,
 otherwise historical data is returned. (NOTE: Historic Data require higher API rights)}
+
+\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
+This requires an extra testing API key, but allows possible all requests.}
 
 \item{...}{Further arguments can be passed to historical data. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyQuotesLatest}{API documentation}}

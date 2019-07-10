@@ -4,10 +4,13 @@
 \alias{get_exchange_meta}
 \title{Get all cryptocurrency exchanges metadata}
 \usage{
-get_exchange_meta(apikey, id = NULL, slug = NULL)
+get_exchange_meta(apikey, id = NULL, slug = NULL, test = FALSE)
 }
 \arguments{
 \item{apikey}{A valid API-key from Coinmarketcap}
+
+\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
+This requires an extra testing API key, but allows possible all requests.}
 }
 \value{
 A dataframe with exchange metadata values

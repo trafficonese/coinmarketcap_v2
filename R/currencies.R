@@ -2,6 +2,8 @@
 #' platform including a unique id
 #' @title Get active cryptocurrencies
 #' @param apikey A valid API-key from Coinmarketcap
+#' @param test If `TRUE`, the requests are done in a testing sandbox environment.
+#' This requires an extra testing API key, but allows possible all requests.
 #' @param ... Further arguments passed to the request. Further information
 #' can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation}{API documentation}
 #' @references \href{https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyMap}{API documentation}
@@ -15,14 +17,13 @@
 #' get_crypto_map(apikey, listing_status = "inactive", start = 1, limit = 10)
 #' }
 #' @export
-get_crypto_map <- function(apikey, ...) {
+get_crypto_map <- function(apikey, test=FALSE, ...) {
         ## Input Check ##########
         if (is.null(apikey)) stop("A valid API key is needed for this request.")
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         what <- "cryptocurrency/map"
-
         whatelse <- list(...)
         if (length(whatelse) > 0) {
                 whatelse <- transform_args(whatelse)
@@ -51,6 +52,8 @@ get_crypto_map <- function(apikey, ...) {
 #' Example: c(1,2)
 #' @param slug Alternatively pass a vector of cryptocurrency slugs.
 #' Example: c("bitcoin","ethereum")
+#' @param test If `TRUE`, the requests are done in a testing sandbox environment.
+#' This requires an extra testing API key, but allows possible all requests.
 #' @references \href{https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyInfo}{API documentation}
 #' @note At least one "id" or "slug" or "symbol" is required for this request.
 #' @return A dataframe with metadata of Cryptocurrencies
@@ -61,12 +64,12 @@ get_crypto_map <- function(apikey, ...) {
 #' get_crypto_meta(apikey, slug=c("bitcoin", "ethereum"))
 #' }
 #' @export
-get_crypto_meta <- function(apikey, symbol=NULL, id=NULL, slug=NULL) {
+get_crypto_meta <- function(apikey, symbol=NULL, id=NULL, slug=NULL, test=FALSE) {
         ## Input Check ##########
         if (is.null(apikey)) stop("A valid API key is needed for this request.")
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         what <- paste0("cryptocurrency/info?")
 
         args <- c(is.null(symbol),is.null(id),is.null(slug))
@@ -101,14 +104,14 @@ get_crypto_meta <- function(apikey, symbol=NULL, id=NULL, slug=NULL) {
 #' @inheritParams get_global_marketcap
 #' @return A dataframe of top Cryptocurrencies with current or historic market data
 #' @examples \dontrun{
-#' get_marketcap_ticker_all('EUR')
-#' get_marketcap_ticker_all('GBP', apikey)
-#' get_marketcap_ticker_all('GBP', apikey, latest=F, start=1,
+#' get_crypto_listings('EUR')
+#' get_crypto_listings('GBP', apikey)
+#' get_crypto_listings('GBP', apikey, latest=F, start=1,
 #'                          date=Sys.Date()-20, limit=10, sort="price", sort_dir="asc")
 #' }
 #' @export
 get_crypto_listings <- function(currency = 'USD', apikey = NULL,
-                                latest = TRUE, ...) {
+                                latest = TRUE, test=FALSE, ...) {
         ## Input Check ##########
         stopifnot(currency %in% get_valid_currencies())
 
@@ -126,7 +129,7 @@ get_crypto_listings <- function(currency = 'USD', apikey = NULL,
 
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         if (latest) {
                 what <- paste0("cryptocurrency/listings/latest?convert=", currency)
         } else {
@@ -176,14 +179,14 @@ get_crypto_listings <- function(currency = 'USD', apikey = NULL,
 #' @export
 get_crypto_quotes <- function(currency = 'USD', apikey = NULL,
                               symbol = NULL, slug = NULL, id = NULL,
-                              latest = TRUE,
+                              latest = TRUE, test = FALSE,
                               ...) {
         ## Input Check ##########
         stopifnot(currency %in% get_valid_currencies())
         if (is.null(apikey)) stop("A valid API key is needed for this request.")
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         if (latest) {
                 what <- paste0("cryptocurrency/quotes/latest?convert=", currency)
                 args <- c(is.null(symbol),is.null(id),is.null(slug))
@@ -235,29 +238,30 @@ get_crypto_quotes <- function(currency = 'USD', apikey = NULL,
 #' @param limit Optionally specify the number of results to return.
 #' Use this parameter and the "start" parameter to determine your own
 #' pagination size.
-#' @note At least one "id" or "slug" or "symbol" is required for this request.
+#' @note A single cryptocurrency "id", "slug", or "symbol" is required.
 #' @return A dataframe with all active market pairs
 #' @examples \dontrun{
 #' get_crypto_marketpairs("EUR", apikey)
 #' get_crypto_marketpairs("EUR", apikey, slug = "bitcoin")
-#' get_crypto_marketpairs("EUR", apikey, symbol = c("BTC","LTC"))
+#' get_crypto_marketpairs("EUR", apikey, symbol = "LTC")
 #' get_crypto_marketpairs("EUR", apikey, symbol = "BTC", start = 10, limit = 20)
 #' }
 #' @export
 get_crypto_marketpairs <- function(currency = 'USD', apikey,
                                    symbol=NULL, id=NULL, slug=NULL,
-                                   start=NULL, limit=NULL) {
+                                   start=NULL, limit=NULL, test=FALSE) {
         ## Input Check ##########
         stopifnot(currency %in% get_valid_currencies())
         if (is.null(apikey)) stop("A valid API key is needed for this request.")
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        base_url <- ifelse(test, test_url, pro_url)
         what <- paste0("cryptocurrency/market-pairs/latest?convert=", currency)
         args <- c(is.null(symbol),is.null(id),is.null(slug))
         if (sum(args) == 3) {
                 symbol = "BTC"
-        } else if (sum(args) != 2) {
+        } else
+        if (sum(args) != 2) {
                 stop("You must use either 'symbol', 'id' or 'slug'")
         }
         if (!is.null(symbol)) what <- paste0(what, "&symbol=", paste(symbol, collapse=","))
@@ -276,7 +280,7 @@ get_crypto_marketpairs <- function(currency = 'USD', apikey,
         check_response(req)
 
         ## Modify Result ##########
-        modify_result(req$content, TRUE, special = 2)
+        modify_result(req$content, TRUE)
 }
 
 #' Return the latest/historical OHLCV (Open, High, Low, Close, Volume) market values for
@@ -304,25 +308,27 @@ get_crypto_marketpairs <- function(currency = 'USD', apikey,
 #' }
 #' @export
 get_crypto_ohlcv <- function(currency = 'USD', apikey, latest = TRUE,
-                             symbol=NULL, id=NULL, ...) {
+                             symbol=NULL, id=NULL, test=FALSE, ...) {
         ## Input Check ##########
         stopifnot(currency %in% get_valid_currencies())
         if (is.null(apikey)) stop("A valid API key is needed for this request.")
 
         ## Build Request (new API) ##########
-        base_url <- "pro-api.coinmarketcap.com"
+        args <- c(is.null(symbol),is.null(id))
+        if (sum(args) == 2) {
+                symbol = "BTC"
+        } else if (sum(args) != 1) {
+                stop("You must use either 'symbol' or 'id'")
+        }
+        base_url <- ifelse(test, test_url, pro_url)
         if (latest) {
                 what <- paste0("cryptocurrency/ohlcv/latest?convert=", currency)
-                args <- c(is.null(symbol),is.null(id))
-                if (sum(args) == 2) {
-                        symbol = "BTC"
-                } else if (sum(args) != 1) {
-                        stop("You must use either 'symbol' or 'id'")
-                }
                 if (!is.null(symbol)) what <- paste0(what, "&symbol=", paste(symbol, collapse=","))
                 if (!is.null(id)) what <- paste0(what, "&id=", paste(id, collapse=","))
         } else {
                 what <- paste0("cryptocurrency/ohlcv/historical?convert=", currency)
+                if (!is.null(symbol)) what <- paste0(what, "&symbol=", paste(symbol, collapse=","))
+                if (!is.null(id)) what <- paste0(what, "&id=", paste(id, collapse=","))
                 whatelse <- list(...)
                 whatelse <- transform_args(whatelse)
                 if (!is.null(whatelse)) {
