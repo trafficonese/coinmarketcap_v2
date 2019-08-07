@@ -35,23 +35,40 @@ check_response <- function(req) {
     }
 }
 
-modify_result <- function(content, filter = FALSE, special = 1, ncols=20) {
-    if (filter) {
-        l <- lapply(fromJSON(rawToChar(content), flatten = T)$data, lapply,
-                    function(x)ifelse(is.null(x), NA, x))
+modify_result <- function(content, case = 1) {
+
+    if (case == 1) {
+        # browser()
+        l <- fromJSON(rawToChar(content), flatten = T)$data
+        # l <- lapply(l, lapply, function(x) ifelse(is.null(x), NA, x))
+        d <- data.frame(l)
+    } else if (case == 2) {
+        l <- lapply(fromJSON(rawToChar(content), flatten = T)$data, as.data.frame)
+        # d <- do.call("rbind", l)
+        d <- data.table::rbindlist(l, fill = TRUE)
+    } else if (case == 3) {
+        d <- fromJSON(rawToChar(content), flatten = T)$data
+        # data.frame(d)
     } else {
         l <- fromJSON(rawToChar(content), flatten = T)$data
+        l <- lapply(l, lapply, function(x) ifelse(is.null(x), NA, x))
+        # browser()
+        if (length(l) > 1) {
+            # l <- lapply(l, as.data.frame)
+            # d <- do.call("rbind", l)
+            # browser()
+            d <- data.table::rbindlist(l)
+        } else {
+            d <- data.frame(l)
+            ## Delete symbol from colum names
+            colnames(d) <- gsub(paste0(d[1,3], "."), "",
+                                colnames(d), fixed = T)
+        }
     }
-    if (special == 1) {
-        d <- data.frame(l)
-        colnames(d) <- gsub(".", "_", colnames(d), fixed = T)
-        colnames(d) <- gsub("quote_", "", colnames(d), fixed = T)
-    } else if (special == 2) {
-        d <- data.frame(matrix(unlist(l), ncol = ncols, byrow = T),
-                        stringsAsFactors = F)
-        colnames(d) <- c(names(l[[1]])[1:length(l[[1]]) - 1],
-                         paste0("quote_", names(l[[1]]$quote[[1]])))
-    }
+    setDT(d)
+    colnames(d) <- gsub(".", "_", colnames(d), fixed = T)
+    colnames(d) <- gsub("quote_", "", colnames(d), fixed = T)
+
 
     ## Convert timestamp columns
     colnams <- colnames(d)
@@ -69,74 +86,3 @@ modify_result <- function(content, filter = FALSE, special = 1, ncols=20) {
     return(d)
 }
 
-
-
-#' Setup
-#'
-#' Specifies API Key and the base URL for session
-#'
-#' @param api_key Your Coinmarketcap API key.
-#' @param sandbox Sets the base URL for the API. If set to TRUE, the sandbox-API
-#'   is called. The default is FALSE.
-#'
-#' @examples
-#' setup("xXXXXxxxXXXxx")
-#' get_setup()
-#'
-#' @export
-#' @name setup
-setup <- function(api_key = NULL, sandbox = FALSE) {
-    if (!is.null(api_key)) {
-        Sys.setenv("COINMARKETCAP_APIKEY" = api_key)
-    }
-    url <- ifelse (sandbox,
-                   "sandbox-api.coinmarketcap.com",
-                   "pro-api.coinmarketcap.com")
-    options("COINMARKETCAP_URL" = url)
-}
-
-#' @rdname setup
-#' @export
-get_setup <- function(){
-    key <- Sys.getenv("COINMARKETCAP_APIKEY")
-    url <- getOption("COINMARKETCAP_URL")
-
-    .prt <- function(val, what){
-        cat(crayon::green(cli::symbol$tick),
-            sprintf("%s is set up", what), "\n")
-    }
-
-    l <- list(
-        api_key = key,
-        url = url
-    )
-    names <- c("API-KEY", "Base-URL")
-    lapply(1:length(l), function(x) .prt(l[[x]], names[[x]]))
-
-    invisible(l)
-}
-
-#' @rdname setup
-#' @export
-reset_setup <- function(api_key = TRUE, sandbox = TRUE){
-    .prt <- function(what){
-        cat(crayon::green(cli::symbol$tick),
-            sprintf("%s sucessfully reset", what),"\n")
-    }
-
-    if (isTRUE(api_key)) {
-        Sys.unsetenv("COINMARKETCAP_APIKEY")
-        .prt("API Key")
-    }
-    if (isTRUE(sandbox)) {
-        options("COINMARKETCAP_URL" = NULL)
-        .prt("Base URL")
-    }
-}
-
-.get_api_key <- function(){
-    Sys.getenv("COINMARKETCAP_APIKEY")
-}
-.get_baseurl <- function(){
-    getOption("COINMARKETCAP_URL")
-}

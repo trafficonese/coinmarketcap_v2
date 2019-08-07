@@ -36,7 +36,7 @@ get_exchange_map <- function(...) {
     check_response(req)
 
     ## Modify Result ##########
-    modify_result(req$content, TRUE)
+    modify_result(req$content)
 }
 
 #' Returns all static metadata for one or more exchanges.
@@ -46,12 +46,12 @@ get_exchange_map <- function(...) {
 #' @references \href{https://coinmarketcap.com/api/documentation/v1/#operation/getV1ExchangeInfo}{API documentation}
 #' @param id Alternatively pass one or more CoinMarketCap cryptocurrency IDs.
 #' Example: c(1,2)
-#' @param slug Alternatively pass a vector of cryptocurrency slugs.
-#' Example: c("bitcoin","ethereum")
+#' @param slug Alternatively pass a vector of exchange slugs.
+#' Example: c("binance","cryptsy")
 #' @return A dataframe with exchange metadata values
 #' @examples \dontrun{
 #' get_exchange_meta(id = 5)
-#' get_exchange_meta(slug = c("binance", "gdax"))
+#' get_exchange_meta(slug = c("binance", "cryptsy"))
 #' }
 #' @export
 get_exchange_meta <- function(id=NULL, slug=NULL) {
@@ -80,5 +80,5 @@ get_exchange_meta <- function(id=NULL, slug=NULL) {
     check_response(req)
 
     ## Modify Result ##########
-    modify_result(req$content, TRUE)
+    modify_result(req$content, case = 4)
 }

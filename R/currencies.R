@@ -56,7 +56,7 @@ get_crypto_map <- function(...) {
     check_response(req)
 
     ## Modify Result ##########
-    modify_result(req$content, filter = F)
+    modify_result(req$content, case = 3)
 }
 
 #' Get all static metdata available for one or more cryptocurrencies
@@ -107,7 +107,7 @@ get_crypto_meta <- function(symbol=NULL, id=NULL, slug=NULL) {
     check_response(req)
 
     ## Modify Result ##########
-    modify_result(req$content, filter = TRUE)
+    modify_result(req$content, case = 4)
 }
 
 #' Get a paginated list of all active cryptocurrencies with latest market data.
@@ -175,7 +175,7 @@ get_crypto_listings <- function(currency = "USD", latest = TRUE, ...) {
     check_response(req)
 
     ## Modify Result ##########
-    modify_result(req$content)
+    modify_result(req$content, case = 3)
 }
 
 #' Get the latest/historical market quotes for 1 or more cryptocurrencies
@@ -212,7 +212,6 @@ get_crypto_quotes <- function(currency = "USD",
     base_url <- .get_baseurl()
     if (is.null(base_url))
         stop("No Base URL is defined. Please call setup() first.")
-
 
     ## Build Request (new API) ##########
     if (latest) {
@@ -258,7 +257,13 @@ get_crypto_quotes <- function(currency = "USD",
     check_response(req)
 
     ## Modify Result ##########
-    modify_result(req$content, TRUE, special = 2)
+    # browser()
+    if (latest) {
+        modify_result(req$content, case = 4)
+    }
+    else {
+        modify_result(req$content, case = 1)
+    }
 }
 
 #' Get a list of all active market pairs that CoinMarketCap tracks for a
@@ -320,7 +325,7 @@ get_crypto_marketpairs <- function(currency = "USD",
     check_response(req)
 
     ## Modify Result ##########
-    modify_result(req$content, TRUE)
+    modify_result(req$content)
 }
 
 #' Return the latest/historical OHLCV (Open, High, Low, Close, Volume) market values for
@@ -390,6 +395,11 @@ get_crypto_ohlcv <- function(currency = "USD", latest = TRUE,
     ## Check Response ##########
     check_response(req)
 
+    # browser()
     ## Modify Result ##########
-    modify_result(req$content, TRUE)
+    if (latest) {
+        modify_result(req$content, case = 4)
+    } else {
+        modify_result(req$content)
+    }
 }

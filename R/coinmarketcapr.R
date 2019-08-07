@@ -17,6 +17,7 @@
 #' @importFrom ggplot2 ggplot aes_string geom_bar xlab ylab ggtitle coord_flip
 #' @importFrom crayon green
 #' @importFrom cli symbol
+#' @importFrom data.table rbindlist setDT
 #'
 #' @docType package
 #' @name coinmarketcapr_v2

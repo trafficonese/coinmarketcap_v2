@@ -3,18 +3,6 @@ library(ggplot2)
 
 sleeptime = 10
 
-## with pro API
-## Warning message:
-# In matrix(unlist(l), ncol = ncols, byrow = T) :
-    # data length [306] is not a sub-multiple or multiple of the number of rows [16]
-
-# get_crypto_quotes(latest = FALSE, symbol = c("BTC","ETH"),
-                  # time_start = Sys.Date()-30, time_end=Sys.Date()-15,
-                  # interval = "30m")
-# get_crypto_quotes(latest = FALSE, id = 4,
-#                   time_start = Sys.Date()-30, time_end=Sys.Date()-15,
-#                   interval = "30m")
-
 ## No-API #####################
 context("No API")
 test_that("No API",{
@@ -70,11 +58,12 @@ test_that("Global-Metrics - Free API",{
 
 context("Cryptocurrencies - Free API")
 test_that("Cryptocurrencies - Free API",{
-    setup('71618174-fd24-4c8f-8c94-83bc3e1cd68e')
+    coinmarketcapr::setup('71618174-fd24-4c8f-8c94-83bc3e1cd68e')
 
     ## get_crypto_map ####################
     res <- get_crypto_map()
     expect_is(res, "data.frame")
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_map(symbol = "BTC")
@@ -99,21 +88,26 @@ test_that("Cryptocurrencies - Free API",{
     expect_true(nrow(res) == 10)
     Sys.sleep(sleeptime)
 
+
     ## get_crypto_meta ####################
     res <- get_crypto_meta()
     expect_is(res, "data.frame")
+    expect_true(nrow(res) == 1)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_meta(symbol = c("BTC", "ETH"))
     expect_is(res, "data.frame")
+    expect_true(nrow(res) == 2)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_meta(id = c(1, 2, 3, 4))
     expect_is(res, "data.frame")
+    expect_true(nrow(res) == 4)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_meta(slug = c("bitcoin", "ethereum"))
     expect_is(res, "data.frame")
+    expect_true(nrow(res) == 2)
     Sys.sleep(sleeptime)
 
     expect_error(get_crypto_meta(slug = "bitcoin", id = 4))
@@ -122,10 +116,12 @@ test_that("Cryptocurrencies - Free API",{
     ## get_crypto_listings ####################
     res <- get_crypto_listings("GBP")
     expect_is(res, "data.frame")
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_listings("GBP", latest = T, start = 1)
     expect_is(res, "data.frame")
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
 
@@ -217,27 +213,27 @@ test_that("Cryptocurrencies - Pro API (Sandbox)",{
     ## get_crypto_marketpairs ####################
     res <- get_crypto_marketpairs("EUR")
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_marketpairs('EUR', slug = 'bitcoin')
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_marketpairs("EUR", id = 1)
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_marketpairs("EUR", symbol = "LTC")
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     res <- get_crypto_marketpairs("EUR", symbol = "ETH", start = 10, limit = 20)
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) == 20)
     Sys.sleep(sleeptime)
 
     expect_error(get_crypto_marketpairs("EUR", symbol = "LTC", id = 5))
@@ -251,7 +247,7 @@ test_that("Cryptocurrencies - Pro API (Sandbox)",{
     res <- get_crypto_ohlcv(latest = T, symbol = "BTC")
     expect_is(res, "data.frame")
     expect_true(nrow(res) == 1)
-    expect_true(res$BTC_symbol == "BTC")
+    expect_true(res$symbol == "BTC")
     Sys.sleep(sleeptime)
 
     res <- get_crypto_ohlcv(latest = T, id = 1)
@@ -262,13 +258,13 @@ test_that("Cryptocurrencies - Pro API (Sandbox)",{
     date <- format(Sys.Date()-35, "%Y-%m-%dT%H:%M:%S.000Z")
     res <- get_crypto_ohlcv(latest = F, id = 1, time_start = date)
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     date <- format(Sys.Date()-35, "%Y-%m-%dT%H:%M:%S.000Z")
     res <- get_crypto_ohlcv(latest = F, symbol = "BTC", time_start = date)
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     date <- format(Sys.Date()-35, "%Y-%m-%dT%H:%M:%S.000Z")
@@ -278,7 +274,7 @@ test_that("Cryptocurrencies - Pro API (Sandbox)",{
                      time_period = "hourly", interval = "hourly",
                      currency = "EUR")
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     expect_error(get_crypto_ohlcv(symbol = "BTC", id = 5))
@@ -292,7 +288,7 @@ test_that("Exchanges - Pro API (Sandbox)",{
     ## get_exchange_map ####################
     res <- get_exchange_map()
     expect_is(res, "data.frame")
-    expect_true(nrow(res) == 1)
+    expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
     res <- get_exchange_map(slug = "binance")
@@ -321,11 +317,14 @@ test_that("Exchanges - Pro API (Sandbox)",{
     expect_error(get_exchange_meta(id = 5, slug = "binance"))
     Sys.sleep(sleeptime)
 
-    # res <- get_exchange_meta(slug = c("binance", "gdax"))
-    # expect_is(res, "data.frame")
-    # expect_true(nrow(res) == 1)
-    # Sys.sleep(sleeptime)
+    res <- get_exchange_meta(slug = c("binance", "cryptsy"))
+    expect_is(res, "data.frame")
+    expect_true(nrow(res) == 2)
+    Sys.sleep(sleeptime)
 
+    res <- get_exchange_meta(id = 4:6)
+    expect_is(res, "data.frame")
+    expect_true(nrow(res) == 3)
 })
 
 

@@ -8,10 +8,9 @@
 #' @return A dataframe with global market cap of Cryptocurrencies
 #' @examples \dontrun{
 #' get_global_marketcap('AUD')
-#' get_global_marketcap('EUR', apikey)
-#' get_global_marketcap(apikey = apikey, latest = FALSE,
-#'                      time_start = Sys.Date()-180, time_end = Sys.Date(),
-#'                      count = 10, interval = "yearly")
+#' get_global_marketcap('EUR')
+#' get_global_marketcap(latest = FALSE, count = 10, interval = "yearly",
+#'                      time_start = Sys.Date()-180, time_end = Sys.Date())
 #'
 #' }
 #' @export
@@ -55,5 +54,6 @@ get_global_marketcap <- function(currency = "USD", latest = TRUE, ...) {
     check_response(req)
 
     ## Modify Result ##########
+    # browser()
     modify_result(req$content)
 }
