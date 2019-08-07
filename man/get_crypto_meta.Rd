@@ -13,8 +13,8 @@ Example: c("BTC","ETH").}
 \item{id}{Alternatively pass one or more CoinMarketCap cryptocurrency IDs.
 Example: c(1,2)}
 
-\item{slug}{Alternatively pass a vector of cryptocurrency slugs.
-Example: c("bitcoin","ethereum")}
+\item{slug}{Alternatively pass a vector of exchange slugs.
+Example: c("binance","cryptsy")}
 }
 \value{
 A dataframe with metadata of Cryptocurrencies

@@ -24,10 +24,9 @@ Extract Global Market Cap of Cryptocurrency Market
 \examples{
 \dontrun{
 get_global_marketcap('AUD')
-get_global_marketcap('EUR', apikey)
-get_global_marketcap(apikey = apikey, latest = FALSE,
-                     time_start = Sys.Date()-180, time_end = Sys.Date(),
-                     count = 10, interval = "yearly")
+get_global_marketcap('EUR')
+get_global_marketcap(latest = FALSE, count = 10, interval = "yearly",
+                     time_start = Sys.Date()-180, time_end = Sys.Date())
 
 }
 }

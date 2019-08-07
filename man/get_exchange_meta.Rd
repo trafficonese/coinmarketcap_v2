@@ -10,8 +10,8 @@ get_exchange_meta(id = NULL, slug = NULL)
 \item{id}{Alternatively pass one or more CoinMarketCap cryptocurrency IDs.
 Example: c(1,2)}
 
-\item{slug}{Alternatively pass a vector of cryptocurrency slugs.
-Example: c("bitcoin","ethereum")}
+\item{slug}{Alternatively pass a vector of exchange slugs.
+Example: c("binance","cryptsy")}
 }
 \value{
 A dataframe with exchange metadata values
@@ -24,7 +24,7 @@ official website URL, social links, and market fee documentation URL.
 \examples{
 \dontrun{
 get_exchange_meta(id = 5)
-get_exchange_meta(slug = c("binance", "gdax"))
+get_exchange_meta(slug = c("binance", "cryptsy"))
 }
 }
 \references{
