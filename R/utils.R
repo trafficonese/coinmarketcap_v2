@@ -42,14 +42,17 @@ modify_result <- function(content, case = 1) {
         l <- fromJSON(rawToChar(content), flatten = T)$data
         # l <- lapply(l, lapply, function(x) ifelse(is.null(x), NA, x))
         d <- data.frame(l)
-    } else if (case == 2) {
+    }
+    else if (case == 2) {
         l <- lapply(fromJSON(rawToChar(content), flatten = T)$data, as.data.frame)
         # d <- do.call("rbind", l)
         d <- data.table::rbindlist(l, fill = TRUE)
-    } else if (case == 3) {
+    }
+    else if (case == 3) {
         d <- fromJSON(rawToChar(content), flatten = T)$data
         # data.frame(d)
-    } else {
+    }
+    else {
         l <- fromJSON(rawToChar(content), flatten = T)$data
         l <- lapply(l, lapply, function(x) ifelse(is.null(x), NA, x))
         # browser()
@@ -78,8 +81,8 @@ modify_result <- function(content, case = 1) {
            grep("last_historical_data", colnams),
            grep("timestamp", colnams))
 
-    d[, a] <- lapply(a, function(x) {
-        d[, x] <- as.POSIXct(as.character(d[, x]),
+    lapply(a, function(x) {
+        d[[x]] <<- as.POSIXct(as.character(d[[x]]),
                              format = "%Y-%m-%dT%H:%M:%S.%OS")
     })
 
