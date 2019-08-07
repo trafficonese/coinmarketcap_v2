@@ -4,13 +4,14 @@
 \alias{get_exchange_meta}
 \title{Get all cryptocurrency exchanges metadata}
 \usage{
-get_exchange_meta(apikey, id = NULL, slug = NULL, test = FALSE)
+get_exchange_meta(id = NULL, slug = NULL)
 }
 \arguments{
-\item{apikey}{A valid API-key from Coinmarketcap}
+\item{id}{Alternatively pass one or more CoinMarketCap cryptocurrency IDs.
+Example: c(1,2)}
 
-\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
-This requires an extra testing API key, but allows possible all requests.}
+\item{slug}{Alternatively pass a vector of cryptocurrency slugs.
+Example: c("bitcoin","ethereum")}
 }
 \value{
 A dataframe with exchange metadata values
@@ -22,9 +23,8 @@ official website URL, social links, and market fee documentation URL.
 }
 \examples{
 \dontrun{
-get_exchange_meta(apikey)
-get_exchange_meta(apikey, id = 1)
-get_exchange_meta(apikey, slug = c("binance", "gdax"))
+get_exchange_meta(id = 5)
+get_exchange_meta(slug = c("binance", "gdax"))
 }
 }
 \references{

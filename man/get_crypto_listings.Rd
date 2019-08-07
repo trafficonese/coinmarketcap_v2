@@ -4,19 +4,13 @@
 \alias{get_crypto_listings}
 \title{Get latest/historical market data}
 \usage{
-get_crypto_listings(currency = "USD", apikey = NULL, latest = TRUE,
-  test = FALSE, ...)
+get_crypto_listings(currency = "USD", latest = TRUE, ...)
 }
 \arguments{
 \item{currency}{currency code - Default is 'USD'}
 
-\item{apikey}{A valid API-key from Coinmarketcap}
-
 \item{latest}{If `TRUE` (default), only the latest data is retrieved,
 otherwise historical data is returned. (NOTE: Historic Data require higher API rights)}
-
-\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
-This requires an extra testing API key, but allows possible all requests.}
 
 \item{...}{Further arguments can be passed to historical data. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation/getV1GlobalmetricsQuotesHistorical}{API documentation}}
@@ -35,9 +29,9 @@ cryptocurrency conversions in the same call.
 \examples{
 \dontrun{
 get_crypto_listings('EUR')
-get_crypto_listings('GBP', apikey)
-get_crypto_listings('GBP', apikey, latest=F, start=1,
-                         date=Sys.Date()-20, limit=10, sort="price", sort_dir="asc")
+get_crypto_listings('GBP')
+get_crypto_listings('GBP'latest=F, start=1,
+                    date=Sys.Date()-20, limit=10, sort="price", sort_dir="asc")
 }
 }
 \references{

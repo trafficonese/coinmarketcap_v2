@@ -4,14 +4,9 @@
 \alias{get_crypto_map}
 \title{Get active cryptocurrencies}
 \usage{
-get_crypto_map(apikey, test = FALSE, ...)
+get_crypto_map(...)
 }
 \arguments{
-\item{apikey}{A valid API-key from Coinmarketcap}
-
-\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
-This requires an extra testing API key, but allows possible all requests.}
-
 \item{...}{Further arguments passed to the request. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation}{API documentation}}
 }
@@ -25,11 +20,11 @@ platform including a unique id
 }
 \examples{
 \dontrun{
-get_crypto_map(apikey)
-get_crypto_map(apikey, symbol="BTC")
-get_crypto_map(apikey, symbol=c("BTC","ETH"))
-get_crypto_map(apikey, listing_status = "active", start = 1, limit = 10)
-get_crypto_map(apikey, listing_status = "inactive", start = 1, limit = 10)
+get_crypto_map()
+get_crypto_map(symbol="BTC")
+get_crypto_map(symbol=c("BTC","ETH"))
+get_crypto_map(listing_status = "active", start = 1, limit = 10)
+get_crypto_map(listing_status = "inactive", start = 1, limit = 10)
 }
 }
 \references{

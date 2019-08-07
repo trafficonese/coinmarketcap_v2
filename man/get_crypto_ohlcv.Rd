@@ -4,13 +4,11 @@
 \alias{get_crypto_ohlcv}
 \title{List latest/historical OHLCV values}
 \usage{
-get_crypto_ohlcv(currency = "USD", apikey, latest = TRUE,
-  symbol = NULL, id = NULL, test = FALSE, ...)
+get_crypto_ohlcv(currency = "USD", latest = TRUE, symbol = NULL,
+  id = NULL, ...)
 }
 \arguments{
 \item{currency}{currency code - Default is 'USD'}
-
-\item{apikey}{A valid API-key from Coinmarketcap}
 
 \item{latest}{If `TRUE` (default), only the latest data is retrieved,
 otherwise historical data is returned.}
@@ -20,9 +18,6 @@ Example: c("BTC","ETH").}
 
 \item{id}{Alternatively pass one or more CoinMarketCap cryptocurrency IDs.
 Example: c(1,2)}
-
-\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
-This requires an extra testing API key, but allows possible all requests.}
 
 \item{...}{Further arguments passed to the request. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation}{API documentation}}
@@ -42,9 +37,9 @@ One of "id" or "symbol" is required for this request.
 }
 \examples{
 \dontrun{
-get_crypto_ohlcv("EUR", apikey)
-get_crypto_ohlcv("EUR", apikey, latest = F)
-get_crypto_ohlcv("EUR", apikey, latest = F, time_period = "hourly",
+get_crypto_ohlcv("EUR")
+get_crypto_ohlcv("EUR", latest = F)
+get_crypto_ohlcv("EUR", latest = F, time_period = "hourly",
                  time_start=Sys.Date()-180, count=5, interval="monthly")
 }
 }

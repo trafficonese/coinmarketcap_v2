@@ -4,12 +4,9 @@
 \alias{get_crypto_meta}
 \title{Get static metdata}
 \usage{
-get_crypto_meta(apikey, symbol = NULL, id = NULL, slug = NULL,
-  test = FALSE)
+get_crypto_meta(symbol = NULL, id = NULL, slug = NULL)
 }
 \arguments{
-\item{apikey}{A valid API-key from Coinmarketcap}
-
 \item{symbol}{One or more cryptocurrency symbols.
 Example: c("BTC","ETH").}
 
@@ -18,9 +15,6 @@ Example: c(1,2)}
 
 \item{slug}{Alternatively pass a vector of cryptocurrency slugs.
 Example: c("bitcoin","ethereum")}
-
-\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
-This requires an extra testing API key, but allows possible all requests.}
 }
 \value{
 A dataframe with metadata of Cryptocurrencies
@@ -33,10 +27,10 @@ At least one "id" or "slug" or "symbol" is required for this request.
 }
 \examples{
 \dontrun{
-get_crypto_meta(apikey)
-get_crypto_meta(apikey, symbol = c("BTC","ETH"))
-get_crypto_meta(apikey, id = c(1,2,3,4))
-get_crypto_meta(apikey, slug=c("bitcoin", "ethereum"))
+get_crypto_meta()
+get_crypto_meta(symbol = c("BTC","ETH"))
+get_crypto_meta(id = c(1,2,3,4))
+get_crypto_meta(slug = c("bitcoin", "ethereum"))
 }
 }
 \references{

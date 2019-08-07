@@ -15,11 +15,10 @@
 #' @importFrom jsonlite fromJSON prettify
 #' @importFrom curl curl_fetch_memory new_handle handle_setheaders
 #' @importFrom ggplot2 ggplot aes_string geom_bar xlab ylab ggtitle coord_flip
-#'
+#' @importFrom crayon green
+#' @importFrom cli symbol
 #'
 #' @docType package
 #' @name coinmarketcapr_v2
 #' @md
 NULL
-
-

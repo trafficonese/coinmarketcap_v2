@@ -4,14 +4,9 @@
 \alias{get_exchange_map}
 \title{Get all cryptocurrency exchanges}
 \usage{
-get_exchange_map(apikey, test = FALSE, ...)
+get_exchange_map(...)
 }
 \arguments{
-\item{apikey}{A valid API-key from Coinmarketcap}
-
-\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
-This requires an extra testing API key, but allows possible all requests.}
-
 \item{...}{Further arguments passed to the request. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation}{API documentation}}
 }
@@ -27,9 +22,9 @@ by slug to filter this list to only those you require.
 }
 \examples{
 \dontrun{
-get_exchange_map(apikey)
-get_exchange_map(apikey, listing_status = "inactive",
-                 slug = "bitcoin", start = 5, limit = 100)
+get_exchange_map()
+get_exchange_map(listing_status = "inactive",
+                 slug = "binance", start = 5, limit = 100)
 }
 }
 \references{

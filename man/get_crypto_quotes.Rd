@@ -4,13 +4,11 @@
 \alias{get_crypto_quotes}
 \title{Get market quotes}
 \usage{
-get_crypto_quotes(currency = "USD", apikey = NULL, symbol = NULL,
-  slug = NULL, id = NULL, latest = TRUE, test = FALSE, ...)
+get_crypto_quotes(currency = "USD", symbol = NULL, slug = NULL,
+  id = NULL, latest = TRUE, ...)
 }
 \arguments{
 \item{currency}{currency code - Default is 'USD'}
-
-\item{apikey}{A valid API-key from Coinmarketcap}
 
 \item{symbol}{One or more cryptocurrency symbols.
 Example: c("BTC","ETH").}
@@ -23,9 +21,6 @@ Example: c(1,2)}
 
 \item{latest}{If `TRUE` (default), only the latest data is retrieved,
 otherwise historical data is returned. (NOTE: Historic Data require higher API rights)}
-
-\item{test}{If `TRUE`, the requests are done in a testing sandbox environment.
-This requires an extra testing API key, but allows possible all requests.}
 
 \item{...}{Further arguments can be passed to historical data. Further information
 can be found in the \href{https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyQuotesLatest}{API documentation}}
@@ -41,12 +36,12 @@ At least one "id" or "slug" or "symbol" is required for this request.
 }
 \examples{
 \dontrun{
-get_crypto_quotes(apikey = apikey)
-get_crypto_quotes(apikey = apikey, symbol="ETH")
-get_crypto_quotes(apikey = apikey, symbol=c("ETH","BTC"))
-get_crypto_quotes(apikey = apikey, slug=c("litecoin","dogecoin"))
-get_crypto_quotes("EUR", apikey = apikey, id=c(3,4))
-get_crypto_quotes(apikey = apikey, latest = FALSE, symbol = c("BTC","ETH"),
+get_crypto_quotes()
+get_crypto_quotes(symbol="ETH")
+get_crypto_quotes(symbol=c("ETH","BTC"))
+get_crypto_quotes(slug=c("litecoin","dogecoin"))
+get_crypto_quotes("EUR", id=c(3,4))
+get_crypto_quotes(latest = FALSE, symbol = c("BTC","ETH"),
                   time_start = Sys.Date()-180, time_end=Sys.Date(), count = 10,
                   interval = "30m")
 }
