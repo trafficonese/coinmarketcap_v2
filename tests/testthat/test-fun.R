@@ -124,7 +124,6 @@ test_that("Cryptocurrencies - Free API",{
     expect_true(nrow(res) > 1)
     Sys.sleep(sleeptime)
 
-
     ## get_crypto_quotes ####################
     res <- get_crypto_quotes()
     expect_is(res, "data.frame")
@@ -165,6 +164,7 @@ test_that("Cryptocurrencies - Free API",{
                                    symbol = "BTC"))
     expect_error(get_crypto_quotes("EUR", id = c(3, 4),
                                    symbol = "BTC", latest = FALSE))
+
 })
 
 context('Plots')
@@ -186,7 +186,7 @@ test_that("Plots ",{
 ## Pro-API #####################
 context("Cryptocurrencies - Pro API")
 test_that("Cryptocurrencies - Pro API (Sandbox)",{
-    setup('5ca3ffee-dbb9-4dff-8f09-e1a9128dfa26', sandbox = TRUE)
+    coinmarketcapr::setup('5ca3ffee-dbb9-4dff-8f09-e1a9128dfa26', sandbox = TRUE)
 
     ## get_global_marketcap ####################
     res <- get_global_marketcap("EUR", latest = FALSE, count = 10)
@@ -199,6 +199,14 @@ test_that("Cryptocurrencies - Pro API (Sandbox)",{
     Sys.sleep(sleeptime)
 
     ## get_crypto_listings ####################
+    date <- Sys.Date()-35
+    res <- get_crypto_listings("GBP", latest = F, start = 1,
+                               date = date, limit = 10,
+                               sort = "price", sort_dir = "asc")
+    expect_is(res, "data.frame")
+    expect_true(nrow(res) == 10)
+    Sys.sleep(sleeptime)
+
     date <- format(Sys.Date()-35, "%Y-%m-%dT%H:%M:%S.000Z")
     res <- get_crypto_listings("GBP", latest = F, start = 1,
                         date = date, limit = 10,
@@ -279,6 +287,24 @@ test_that("Cryptocurrencies - Pro API (Sandbox)",{
 
     expect_error(get_crypto_ohlcv(symbol = "BTC", id = 5))
 
+    ## get_crypto_quotes ####################
+    res <- get_crypto_quotes("EUR", latest = FALSE)
+    expect_is(res, "data.frame")
+    Sys.sleep(sleeptime)
+
+    res <- get_crypto_quotes("EUR", id = 3:5, latest = FALSE)
+    expect_is(res, "data.frame")
+    Sys.sleep(sleeptime)
+
+    res <- get_crypto_quotes("EUR", symbol = c("BTC","LTC"), latest = FALSE)
+    expect_is(res, "data.frame")
+    Sys.sleep(sleeptime)
+
+    res <- get_crypto_quotes("EUR", symbol = c("BTC","LTC"), latest = FALSE,
+                             count=10, interval = "45m")
+    expect_is(res, "data.frame")
+    expect_true(nrow(res) == 10)
+    Sys.sleep(sleeptime)
 })
 
 context("Exchanges - Pro API")

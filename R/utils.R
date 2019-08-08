@@ -38,28 +38,20 @@ check_response <- function(req) {
 modify_result <- function(content, case = 1) {
 
     if (case == 1) {
-        # browser()
         l <- fromJSON(rawToChar(content), flatten = T)$data
-        # l <- lapply(l, lapply, function(x) ifelse(is.null(x), NA, x))
         d <- data.frame(l)
     }
-    else if (case == 2) {
-        l <- lapply(fromJSON(rawToChar(content), flatten = T)$data, as.data.frame)
-        # d <- do.call("rbind", l)
-        d <- data.table::rbindlist(l, fill = TRUE)
-    }
+    # else if (case == 2) {
+    #     l <- lapply(fromJSON(rawToChar(content), flatten = T)$data, as.data.frame)
+    #     d <- data.table::rbindlist(l, fill = TRUE)
+    # }
     else if (case == 3) {
         d <- fromJSON(rawToChar(content), flatten = T)$data
-        # data.frame(d)
     }
     else {
         l <- fromJSON(rawToChar(content), flatten = T)$data
         l <- lapply(l, lapply, function(x) ifelse(is.null(x), NA, x))
-        # browser()
         if (length(l) > 1) {
-            # l <- lapply(l, as.data.frame)
-            # d <- do.call("rbind", l)
-            # browser()
             d <- data.table::rbindlist(l)
         } else {
             d <- data.frame(l)

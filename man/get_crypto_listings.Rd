@@ -30,7 +30,7 @@ cryptocurrency conversions in the same call.
 \dontrun{
 get_crypto_listings('EUR')
 get_crypto_listings('GBP')
-get_crypto_listings('GBP'latest=F, start=1,
+get_crypto_listings('GBP', latest=F, start=1,
                     date=Sys.Date()-20, limit=10, sort="price", sort_dir="asc")
 }
 }
