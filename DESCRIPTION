@@ -13,6 +13,7 @@ License: MIT + file LICENSE
 LazyData: true
 Imports: jsonlite,
     ggplot2,
+    data.table,
     curl,
     cli,
     crayon
